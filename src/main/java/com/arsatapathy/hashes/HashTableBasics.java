@@ -8,6 +8,7 @@ public class HashTableBasics<X, Y> {
     private int capacity;
     private int size;
 
+    @SuppressWarnings("unchecked")
     public HashTableBasics(int capacity) {
         this.capacity = capacity;
         this.data = new HashEntry[capacity];
