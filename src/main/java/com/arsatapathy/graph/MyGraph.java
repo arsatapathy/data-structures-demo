@@ -28,7 +28,9 @@ public class MyGraph {
                 10, new LinkedList<>()
         );
         System.out.println();
-        System.out.print("Connected component " + connectedComponentsCount(graph2));
+        System.out.println("Connected component " + connectedComponentsCount(graph2));
+        System.out.println(hasPath(graph2, 0, 5, new HashSet<>()));
+        System.out.println(hasPath(graph2, 0, 4, new HashSet<>()));
     }
 
 
@@ -90,6 +92,31 @@ public class MyGraph {
         }
 
         return true;
+    }
+
+    public static boolean hasPath(Map<Integer, List<Integer>> graph, int start, int target, Set<Integer> visisted) {
+        Stack<Integer> stack = new Stack<>();
+
+        stack.push(start);
+
+        while(!stack.isEmpty()) {
+            int current = stack.pop();
+
+            if (current == target)
+                return true;
+
+            visisted.add(current);
+
+            for(int neighbour:graph.get(current)) {
+                if (!visisted.contains(neighbour)) {
+                    stack.push(neighbour);
+                }
+            }
+
+        }
+
+        return false;
+
     }
 
 
