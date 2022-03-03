@@ -6,20 +6,29 @@ public class MyGraph {
 
     public static void main(String... args) {
 
-        Map<Integer, List<Integer>> graph = Map.of(
+        Map<Integer, List<Integer>> graph1 = Map.of(
                 1, List.of(2, 3),
                 2, List.of(4),
                 3, List.of(5),
                 4, List.of(6),
                 5, new LinkedList<>(),
                 6, new LinkedList<>()
-		);
+        );
 
-        DFS(graph, 1, new HashSet<>());
+        DFS(graph1, 1, new HashSet<>());
 
+        Map<Integer, List<Integer>> graph2 = Map.of(
+                0, List.of(8, 1, 5),
+                1, List.of(0),
+                5, List.of(0,8),
+                8, List.of(0,5),
+                2, List.of(3,4),
+                3, List.of(2,4),
+                4, List.of(3,2),
+                10, new LinkedList<>()
+        );
         System.out.println();
-
-        BFS(graph, 1);
+        System.out.print("Connected component " + connectedComponentsCount(graph2));
     }
 
 
@@ -53,6 +62,34 @@ public class MyGraph {
             }
         }
 
+    }
+
+    public static int connectedComponentsCount(Map<Integer, List<Integer>> graph) {
+        int count = 0;
+
+        Set<Integer> visited = new HashSet<>();
+
+        for (int key :graph.keySet()) {
+            if (isConnected(graph, key, visited)){
+                count += 1;
+            }
+        }
+
+        return count;
+    }
+
+    public static boolean isConnected(Map<Integer, List<Integer>> graph, int start, Set<Integer> visisted) {
+        if (visisted.contains(start)) {
+            return false;
+        } else {
+            visisted.add(start);
+        }
+
+        for(int neighbour :graph.get(start)) {
+            isConnected(graph, neighbour, visisted);
+        }
+
+        return true;
     }
 
 
