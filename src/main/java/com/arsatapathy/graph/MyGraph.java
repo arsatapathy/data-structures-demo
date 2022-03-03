@@ -8,11 +8,11 @@ public class MyGraph {
 
         Map<Integer, List<Integer>> graph1 = Map.of(
                 1, List.of(2, 3),
-                2, List.of(4),
-                3, List.of(5),
-                4, List.of(6),
-                5, new LinkedList<>(),
-                6, new LinkedList<>()
+                2, List.of(1, 4),
+                3, List.of(1, 5),
+                4, List.of(2, 6),
+                5, List.of(3),
+                6, List.of(4)
         );
 
         DFS(graph1, 1, new HashSet<>());
@@ -53,6 +53,12 @@ public class MyGraph {
         System.out.println("Shortest Path 1-3 is :" + shortestPath(graph3, 1, 3));
         System.out.println("Shortest Path 1-4 is :" + shortestPath(graph3, 1, 4));
         System.out.println("Shortest Path 1-5 is :" + shortestPath(graph3, 1, 5));
+
+        System.out.println();
+
+        System.out.println("Largest Component of Graph1 :" + largestComponent(graph1));
+        System.out.println("Largest Component of Graph2 :" + largestComponent(graph2));
+        System.out.println("Largest Component of Graph3 :" + largestComponent(graph3));
     }
 
 
@@ -216,6 +222,42 @@ public class MyGraph {
 
         return graph;
     }
+
+    public static int largestComponent(Map<Integer, List<Integer>> graph) {
+        int maxCount = Integer.MIN_VALUE;
+        Set<Integer> visited = new HashSet<>();
+
+        for(int key :graph.keySet()){
+            maxCount = Math.max(maxCount, numberOfComponents(graph, key, visited));
+        }
+
+        return maxCount;
+    }
+
+    public static int numberOfComponents(Map<Integer, List<Integer>> graph, int start, Set<Integer> visited) {
+        int count = 0;
+        Stack<Integer> stack = new Stack<>();
+
+        stack.push(start);
+
+        while(!stack.isEmpty()) {
+            int current = stack.pop();
+
+            if (!visited.contains(current)) {
+                visited.add(current);
+            } else {
+                continue;
+            }
+
+            count += 1;
+
+            for(int neighbour :graph.get(current)) {
+                    stack.push(neighbour);
+            }
+        }
+        return count;
+    }
+
 
 }
 
